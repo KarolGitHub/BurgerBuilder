@@ -13,38 +13,18 @@ const burger = (props) => {
                     return <BurgerIngedient key={igKey + i} type={igKey} />
                 });
         }).reduce((arr, el) => arr.concat(el), []);
-    console.log(transformedIngedients);
+
     if (transformedIngedients.length === 0) {
         transformedIngedients = <p>Please start adding ingredients!</p>
     }
-    else {
-        switch (Array(props.ingredients['bread']).length) {
-            case 1: {
-                break;
-            }
-            case 2: {
-                let bread = transformedIngedients.slice(keyArray.indexOf('bread'), keyArray.lastIndexOf('bread') + 1);
-                transformedIngedients.splice(keyArray.indexOf('bread'), 2);
-                transformedIngedients.splice(keyArray.lastIndexOf('cheese') + 1,0, bread[0]);
-                transformedIngedients.splice(keyArray.lastIndexOf('meat'),0, bread[1]);
-                console.log(bread);
-                console.log(keyArray.indexOf('bread'));
-                break;
-            }
-            case 3: {
-                let bread = transformedIngedients.slice(keyArray.indexOf('bread'), keyArray.lastIndexOf('bread') + 1);
-                transformedIngedients.splice(keyArray.indexOf('bread'), 3);
-                transformedIngedients.splice(keyArray.lastIndexOf('salad') + 1,0, bread[0]);
-                transformedIngedients.splice(keyArray.lastIndexOf('cheese') + 2,0, bread[1]);
-                transformedIngedients.splice(keyArray.lastIndexOf('meat'),0, bread[2]);
-                console.log(bread);
-                break;
-            }
-            default:
-                console.log(Object.keys(props.ingredients));
-        }
+    else if (props.bread > 0) {
+        let index = Math.round(transformedIngedients.length / (props.bread + 1));
+        for (let i = index, j = 0; j < props.bread; i += index) {
+            transformedIngedients.splice(i + j, 0, <BurgerIngedient key={'bread' + j} type='bread' />);
+            j++;
+        }  
+        // let bread = transformedIngedients.slice(keyArray.indexOf('bread'), keyArray.lastIndexOf('bread') + 1);
     }
-    console.log(keyArray);
     return (
         <div className={classes.Burger}>
             <BurgerIngedient type='bread-top' />
