@@ -8,6 +8,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../Hoc/withErrorHandler/withErrorHandler';
+// import { Link } from 'react-router-dom';
 
 const INGEDIENTS_PRICES = {
     salad: 0.4,
@@ -35,7 +36,7 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount() {
-        axios.get('/ingredients.json', )
+        axios.get('/ingredients.json',)
             .then(response => {
                 console.log(response);
                 this.setState({
@@ -109,32 +110,17 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        // alert('You choose to continue!');
-        this.setState({ loading: true });
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Mr Majster',
-                address: {
-                    street: 'Spacestreet 1',
-                    zipCode: '12345',
-                    country: 'MCR'
-                },
-                email: 'test@test.com',
-            },
-            deliveryMethod: 'fastest',
-
+        const queryParams = [];
+        for (let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
         }
-        axios.post('/orders.json', order)
-            .then(response => {
-                this.setState({ loading: false, isModal: false });
-                console.log(response);
-            })
-            .catch(error => {
-                this.setState({ loading: false, isModal: false });
-                console.log(error);
-            });
+        queryParams.push(encodeURIComponent('bread') + '=' + encodeURIComponent(this.state.bread));
+        queryParams.push(encodeURIComponent('price') + '=' + encodeURIComponent(this.state.totalPrice));
+        const queryString = queryParams.join('&');
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryString,
+        });
     }
 
     render() {
