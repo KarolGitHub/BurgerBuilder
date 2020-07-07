@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import axios from '../../../axios-orders';
 import Button from '../../../components/UI/Button/Button';
@@ -43,6 +43,7 @@ class ContactData extends Component {
                 value: '',
                 validation: {
                     required: true,
+                    isNumeric: true,
                     minLength: 5,
                     maxLength: 5,
                 },
@@ -69,6 +70,7 @@ class ContactData extends Component {
                 value: '',
                 validation: {
                     required: true,
+                    isEmail: true
                 },
                 valid: true,
             },
@@ -99,8 +101,9 @@ class ContactData extends Component {
         }
 
         const order = {
-            ingredients: this.props.ingredients,
-            price: this.props.totalPrice,
+            ingredients: this.props.ings,
+            bread: this.props.bread,
+            price: this.props.price,
             orderData: formData
         }
         axios.post('/orders.json', order)
@@ -116,13 +119,27 @@ class ContactData extends Component {
     }
 
     isValid(value, rules) {
+        let isValid = true;
+        
+        if (!rules) {
+            return true;
+        }
+
         if (rules.required) {
-            return value.trim() !== '' &&
+            isValid = value.trim() !== '' &&
                 (rules.minLength ? value.length >= rules.minLength : true) &&
                 (rules.maxLength ? value.length <= rules.maxLength : true)
-        }
-        else {
-            return false;
+
+            if (rules.isEmail) {
+                const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+                isValid = pattern.test(value) && isValid
+            }
+
+            if (rules.isNumeric) {
+                const pattern = /^\d+$/;
+                isValid = pattern.test(value) && isValid
+            }
+            return isValid;
         }
     }
 
@@ -143,7 +160,7 @@ class ContactData extends Component {
 
         // console.log(updatedFormElement);
         updatedOrderForm[inputID] = updatedFormElement;
-        this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid});
+        this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid });
     }
 
     render() {
@@ -178,4 +195,12 @@ class ContactData extends Component {
     }
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+    return {
+        ings: state.ingredients,
+        bread: state.bread,
+        price: state.totalPrice
+    };
+};
+
+export default connect(mapStateToProps)(ContactData);
