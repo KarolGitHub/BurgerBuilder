@@ -29,9 +29,8 @@ const withErrorHandler = (WrappedComponent, axios) => {
             axios.interceptors.response.eject(this.resInterceptor);
         }
 
-
-        modalHandler = (prevState) => {
-            this.setState({ error: !prevState });
+        modalHandler = () => {
+            this.setState({ error: null });
         }
 
         render() {
@@ -39,7 +38,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
                 <Aux>
                     <Modal
                         isOpen={this.state.error}
-                        isClosed={() => this.modalHandler(this.state.error)}
+                        isClosed={this.modalHandler}
                     >
                         <p style={{ color: 'red', textAlign: 'center' }}>Oops, something went wrong!</p>
                         {this.state.error ? this.state.error.message : null}

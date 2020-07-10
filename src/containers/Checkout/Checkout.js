@@ -1,10 +1,11 @@
 import React from 'react';
 import { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
+// import * as orderActions from '../../store/actions/index';
 class Checkout extends Component {
 
     cancelHandler = () => (
@@ -16,23 +17,26 @@ class Checkout extends Component {
     )
     render() {
         return (
-            <div>
-                <CheckoutSummary
-                    ingredients={{ ...this.props.ings, bread: this.props.bread }}
-                    checkoutCancelled={this.cancelHandler}
-                    checkoutContinued={this.continueHandler} />
-                <Route
-                    path={this.props.match.path + '/contact-data'}
-                    component={ContactData}/>
-            </div>
+            this.props.ings && !this.props.purchased ?
+                <div>
+                    <CheckoutSummary
+                        ingredients={{ ...this.props.ings, bread: this.props.bread }}
+                        checkoutCancelled={this.cancelHandler}
+                        checkoutContinued={this.continueHandler} />
+                    <Route
+                        path={this.props.match.path + '/contact-data'}
+                        component={ContactData} />
+                </div>
+                : <Redirect to={'/'} />
         );
     }
 }
 
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients,
-        bread: state.bread,
+        ings: state.burgerBuilder.ingredients,
+        bread: state.burgerBuilder.bread,
+        purchased: state.order.purchased
     }
 };
 

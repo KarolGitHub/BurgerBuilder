@@ -14,6 +14,7 @@ const input = (props) => {
     switch (props.elementtype) {
         case ('input'):
             inputElement = <input
+                autoFocus={props.focus}
                 onChange={props.change}
                 onBlur={() => props.invalid}
                 className={inputClasses.join(' ')}
@@ -22,6 +23,7 @@ const input = (props) => {
             break;
         case ('textarea'):
             inputElement = <textarea
+                autoFocus={props.focus}
                 onChange={props.change}
                 onBlur={() => props.invalid}
                 className={inputClasses.join(' ')}
@@ -31,6 +33,7 @@ const input = (props) => {
         case ('select'):
             inputElement =
                 <select
+                    autoFocus={props.focus}
                     onChange={props.change}
                     onBlur={() => props.invalid}
                     className={inputClasses.join(' ')}
@@ -44,6 +47,7 @@ const input = (props) => {
             break;
         default:
             inputElement = <input
+                autoFocus={props.focus}
                 onChange={props.change}
                 onBlur={() => props.invalid}
                 className={inputClasses.join(' ')}
