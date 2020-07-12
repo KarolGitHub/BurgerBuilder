@@ -1,11 +1,6 @@
-export const updateObject = (oldObject, ...updatedProps) => {
-    let updatedObject = {};
-
-    for (let props of updatedProps) {
-        updatedObject = { ...updatedObject, ...props };
-    }
+export const updateObject = (oldObject, updatedProps) => {
     return {
         ...oldObject,
-        ...updatedObject
+        ...updatedProps
     };
 };

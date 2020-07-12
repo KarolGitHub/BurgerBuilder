@@ -15,15 +15,26 @@ export const remIng = (name) => {
     };
 };
 
-export const setIng = () => {
+export const setIng = (building) => {
     return dispatch => {
-        axios.get('https://burger-builder-46554.firebaseio.com/ingredients.json')
-            .then((response) => dispatch({
+        if (building) {
+            dispatch({
                 type: actionTypes.SET_ING,
-                ingredients: response.data
-            }))
-            .catch((error) => dispatch({
-                type: actionTypes.FETCH_ING_FAILED,
-            }))
+                building: building
+            })
+        }
+        else {
+            axios.get('https://burger-builder-46554.firebaseio.com/ingredients.json')
+                .then((response) => dispatch({
+                    type: actionTypes.SET_ING,
+                    ingredients: response.data,
+                    building: building
+                }))
+                .catch((error) => dispatch({
+                    type: actionTypes.FETCH_ING_FAILED,
+                    error: error,
+                    building: building
+                }))
+        }
     };
 };

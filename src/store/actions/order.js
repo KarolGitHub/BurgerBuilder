@@ -2,12 +2,12 @@ import * as actionTypes from './actionsTypes';
 import axios from '../../axios-orders';
 
 
-export const purchaseBurger = (orderData) => {
+export const purchaseBurger = (orderData, token) => {
     return dispatch => {
         dispatch({
             type: actionTypes.PURCHASE_BURGER_START
         })
-        axios.post('/orders.json', orderData)
+        axios.post('/orders.json?auth=' + token, orderData)
             .then(response => {
                 dispatch({
                     type: actionTypes.PURCHASE_BURGER_SUCCESS,
@@ -30,12 +30,13 @@ export const purchaseInit = () => {
     };
 };
 
-export const fetchOrders = () => {
-    return dispatch  => {
+export const fetchOrders = (token, userId) => {
+    return dispatch => {
         dispatch({
             type: actionTypes.FETCH_ORDERS_INIT
-        })
-        axios.get('/orders.json')
+        });
+        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
+        axios.get('/orders.json' + queryParams)
             .then(response => {
                 const orders = [];
                 for (let key in response.data) {

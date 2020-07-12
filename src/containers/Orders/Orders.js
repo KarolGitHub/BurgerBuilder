@@ -11,41 +11,37 @@ import * as actions from '../../store/actions/index';
 class Orders extends Component {
 
     componentDidMount() {
-        this.props.onFetchOrders();
+        this.props.onFetchOrders(this.props.token, this.props.userId);
     }
 
     render() {
 
         return (
-            !this.props.error ?
-                !this.props.loading ?
-                    <div>
-                        {this.props.orders.map(order => (
-                            <Order
-                                key={order.id}
-                                ingredients={order.ingredients}
-                                price={+order.price} />
-                        ))}
-                    </div> : <Spinner /> :
+            !this.props.loading ?
                 <div>
-                    <h1>Orders can't be loaded!</h1>
-                    <p>{this.props.error.message}</p>
-                </div>
+                    {this.props.orders.map(order => (
+                        <Order
+                            key={order.id}
+                            ingredients={order.ingredients}
+                            price={+order.price} />
+                    ))}
+                </div> : <Spinner />
         );
     }
 }
 
 const mapStateToProps = state => {
     return {
-        loading: state.order.loading,
         orders: state.order.orders,
-        error: state.order.error,
+        loading: state.order.loading,
+        token: state.auth.token,
+        userId: state.auth.userId
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchOrders: () => dispatch(actions.fetchOrders())
+        onFetchOrders: (token, id) => dispatch(actions.fetchOrders(token, id))
     };
 };
 

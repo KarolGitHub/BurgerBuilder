@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import classes from './BuildControls.module.css';
 import BuildControl from './BuildControl/BuildControl';
-import PropTypes from 'prop-types';
+
 
 const controls = [
     { label: 'Salad', type: 'salad' },
@@ -25,8 +26,8 @@ const buildControls = (props) => (
         <button
             className={classes.OrderButton}
             disabled={!props.purchaseable}
-            onClick={props.purchased}
-        >ORDER NOW
+            onClick={props.purchased}>
+            {props.isAuth ? 'ORDER NOW' : 'LOG IN IS REQUIRED'}
         </button>
     </div>
 );
