@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import axios from '../../../axios-orders';
 import Button from '../../../components/UI/Button/Button';
@@ -7,6 +8,7 @@ import classes from './ContactData.module.css';
 import Input from '../../../components/UI/Input/Input';
 import withErrorHandler from '../../../Hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../../store/actions/order';
+import { updateObject, isValid} from '../../../shared/utility';
 
 class ContactData extends Component {
 
@@ -119,45 +121,21 @@ class ContactData extends Component {
         this.props.onOrderBurger(order, this.props.token);
     }
 
-    isValid(value, rules) {
-        let isValid = true;
-
-        if (!rules) {
-            return true;
-        }
-
-        if (rules.required) {
-            isValid = value.trim() !== '' &&
-                (rules.minLength ? value.length >= rules.minLength : true) &&
-                (rules.maxLength ? value.length <= rules.maxLength : true)
-
-            if (rules.isEmail) {
-                const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-                isValid = pattern.test(value) && isValid
-            }
-
-            if (rules.isNumeric) {
-                const pattern = /^\d+$/;
-                isValid = pattern.test(value) && isValid
-            }
-            return isValid;
-        }
-    }
-
     inputChangedHandler = (event, inputID) => {
-        const updatedOrderForm = {
-            ...this.state.orderForm
-        }
-        const updatedFormElement = { ...updatedOrderForm[inputID] };
-        updatedFormElement.value = event.target.value;  
-        updatedFormElement.valid = this.isValid(updatedFormElement.value, updatedFormElement.validation);
-        updatedFormElement.touched = true;
-        updatedOrderForm[inputID] = updatedFormElement;
 
-        let formIsValid = true;
+        const updatedFormElement = updateObject(this.state.orderForm[inputID],
+            {
+                value: event.target.value,
+                valid: isValid(event.target.value, this.state.orderForm[inputID].validation),
+                touched: true
+            });
+        const updatedOrderForm = updateObject(this.state.orderForm, {[inputID]: updatedFormElement});
+
+        let formIsValid = true;  
         for (let inputID in updatedOrderForm) {
             formIsValid = updatedOrderForm[inputID].valid && formIsValid;
         }
+
         this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid });
     }
 
@@ -183,7 +161,7 @@ class ContactData extends Component {
                                 elementconfig={formElement.config.elementConfig}
                                 value={formElement.config.value}
                                 change={(event) => this.inputChangedHandler(event, formElement.id)}
-                                invalid={formElement.config.touched ? !formElement.config.valid : false }
+                                invalid={formElement.config.touched ? !formElement.config.valid : false}
                             />
                         ))}
                         <Button btnType='Success' disabled={!this.state.formIsValid} clicked={this.orderHandler}>ORDER</Button>

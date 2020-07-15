@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NavigationItems /> Render unit tests snapshot match 1`] = `ShallowWrapper {}`;
+
+exports[`<NavigationItems /> Unit tests snapshot match 1`] = `ShallowWrapper {}`;

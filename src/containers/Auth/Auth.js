@@ -9,8 +9,7 @@ import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import classes from './Auth.module.css';
 import withErrorHandler from '../../Hoc/withErrorHandler/withErrorHandler';
-
-
+import { updateObject , isValid} from '../../shared/utility';
 class Auth extends Component {
 
     state = {
@@ -49,41 +48,17 @@ class Auth extends Component {
         isSignup: true,
     }
 
-    isValid(value, rules) {
-        let isValid = true;
-
-        if (!rules) {
-            return true;
-        }
-
-        if (rules.required) {
-            isValid = this.state.isSignup ? value.trim() !== '' &&
-            (rules.minLength ? value.length >= rules.minLength : true) &&
-            (rules.maxLength ? value.length <= rules.maxLength : true) : true
-
-            if (rules.isEmail) {
-                const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-                isValid = pattern.test(value) && isValid
-            }
-
-            if (rules.isNumeric) {
-                const pattern = /^\d+$/;
-                isValid = pattern.test(value) && isValid
-            }
-            return isValid;
-        }
-    }
-
     inputChangedHandler = (event, inputID) => {
-        const updatedControls = {
-            ...this.state.controls,
-            [inputID]: {
-                ...this.state.controls[inputID],
-                value: event.target.value,
-                valid: this.isValid(event.target.value, this.state.controls[inputID].validation),
-                touched: true
+        const updatedControls = updateObject(this.state.controls,
+            {
+                [inputID]: updateObject(this.state.controls[inputID],
+                    {
+                        value: event.target.value,
+                        valid: isValid(event.target.value, this.state.controls[inputID].validation, this.state.isSignup),
+                        touched: true
+                    })
             }
-        }
+        );
         this.setState({ controls: updatedControls });
     }
 

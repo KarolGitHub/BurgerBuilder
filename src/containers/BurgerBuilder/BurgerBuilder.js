@@ -3,16 +3,14 @@ import Aux from '../../Hoc/hoc/Auxiliary';
 import { connect } from 'react-redux';
 
 import Burger from '../../components/Burger/Burger';
-import BurgerControls from '../../components/Burger/BuildControls/BuildControls';
+import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../Hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../store/actions/index';
-
-// import { Link } from 'react-router-dom';
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
 
     state = {
         isModal: false,
@@ -20,7 +18,7 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props);
+        // console.log(this.props);
         this.props.onIngredientSet(this.props.building);
     }
 
@@ -73,7 +71,7 @@ class BurgerBuilder extends Component {
                         </Modal>
 
                         <Burger ingredients={this.props.ings} bread={this.props.bread} />
-                        <BurgerControls
+                        <BuildControls
                             ingredientAdded={this.props.onIngredientAdded}
                             ingredientRemoved={this.props.onIngredientRemoved}
                             disabled={disabledInfo}

@@ -2,24 +2,23 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
+import asyncComponent from './Hoc/hoc/asyncComponent/asyncComponent';
 import Layout from './Hoc/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
-import Checkout from './containers/Checkout/Checkout';
 import ErrorPage from './components/ErrorPage/ErrorPage';
-import Orders from './containers/Orders/Orders';
 import Auth from './containers/Auth/Auth';
-import Logout from './containers/Auth/Logout/Logout';
 import * as actions from './store/actions/index';
+const asyncCheckout = asyncComponent(() => {
+  return import('./containers/Checkout/Checkout');
+})
+const asyncOrders = asyncComponent(() => {
+  return import('./containers/Orders/Orders');
+})
+const asyncLogout = asyncComponent(() => {
+  return import('./containers/Auth/Logout/Logout');
+})
 class App extends Component {
-  /* state = {
-    show: true,
-  }; */
-
-  /* componentDidMount() {
-    setTimeout(() => {
-      this.setState({ show: false });
-    }, 5000);
-  } */
+  
   componentDidMount() {
     this.props.onTryAutoSignup();
   }
@@ -35,9 +34,9 @@ class App extends Component {
         <Switch>
           <Route path='/' exact component={BurgerBuilder} />
           <Route path='/login' component={Auth} />
-          <Route path='/checkout' component={Checkout} />
-          <Route path='/orders' component={Orders} />
-          <Route path='/logout' component={Logout} />
+          <Route path='/checkout' component={asyncCheckout} />
+          <Route path='/orders' component={asyncOrders} />
+          <Route path='/logout' component={asyncLogout} />
           <Route component={ErrorPage} />
         </Switch>
       );

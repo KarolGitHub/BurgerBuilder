@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BurgerBuilder /> Unit tests snapshot match 1`] = `undefined`;
+
+exports[`<NavigationItems /> Unit tests snapshot match 1`] = `undefined`;
