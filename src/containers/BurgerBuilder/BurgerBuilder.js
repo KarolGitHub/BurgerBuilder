@@ -55,13 +55,12 @@ export class BurgerBuilder extends Component {
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
         return (
-            this.props.error ?
-                null :
+            !this.props.error ?
                 this.props.ings ?
                     <Aux>
                         <Modal
                             isOpen={this.state.isModal}
-                            isClosed={() => this.modalHandler(this.state.isModal)}>
+                            clicked={() => this.modalHandler(this.state.isModal)}>
                             {!this.state.loading ?
                                 <OrderSummary
                                     ingredients={this.props.ings}
@@ -79,7 +78,7 @@ export class BurgerBuilder extends Component {
                             purchaseable={this.updatePurchaseState(this.props.ings)}
                             purchased={() => this.modalHandler(this.state.isModal)}
                             isAuth={this.props.isAuth} />
-                    </Aux> : <Spinner />
+                    </Aux> : <Spinner /> : null
         );
     }
 }

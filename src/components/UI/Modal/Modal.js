@@ -9,20 +9,16 @@ class Modal extends Component {
         return nextProps.isOpen !== this.props.isOpen || nextProps.children !== this.props.children;
     }
 
-   /*  componentDidUpdate() {
-        console.log('[Modal] DidUpdate');
-    } */
     render() {
         return (
             <Aux>
-                <Backdrop isOpen={this.props.isOpen} clicked={this.props.isClosed} />
+                <Backdrop isOpen={this.props.isOpen} clicked={this.props.clicked} />
                 <div
                     className={classes.Modal}
                     style={{
                         transform: this.props.isOpen ? 'translate(0)' : 'translate(-100vh)',
                         opacity: this.props.isOpen ? '1' : '0',
-                    }}
-                >
+                    }}>
                     {this.props.children}
                 </div >
             </Aux>
