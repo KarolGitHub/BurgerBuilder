@@ -1,29 +1,23 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import React from "react";
+import { shallow } from "enzyme";
 
-import { BurgerBuilder } from '../BurgerBuilder';
-import BuildControls from '../../../components/Burger/BuildControls/BuildControls';
+import { BurgerBuilder } from "../BurgerBuilder";
+import BuildControls from "../../../components/Burger/BuildControls/BuildControls";
 
+describe("<BurgerBuilder />", () => {
+  describe("Unit tests", () => {
+    let wrapper;
+    beforeEach(() => {
+      wrapper = shallow(<BurgerBuilder onIngredientSet={() => {}} />);
+    });
 
+    it("should render <BuildControls /> when receiving ingredients", () => {
+      wrapper.setProps({ ings: { salad: 0 } });
+      expect(wrapper.find(BuildControls)).toHaveLength(1);
+    });
 
-
-describe('<BurgerBuilder />', () => {
-
-	describe('Unit tests', () => {
-		let wrapper;
-		beforeEach(() => {
-			wrapper = shallow(<BurgerBuilder onIngredientSet={() => {}}/>);
-		});
-
-		it('should render <BuildControls /> when receiving ingredients', () => {
-			wrapper.setProps({ ings: { salad: 0 } });
-			expect(wrapper.find(BuildControls)).toHaveLength(1);
-		});
-
-		/* it('snapshot match', () => {
+    /* it('snapshot match', () => {
 			expect(wrapper).toMatchSnapshot();
 		}); */
-
-	});
+  });
 });
-
