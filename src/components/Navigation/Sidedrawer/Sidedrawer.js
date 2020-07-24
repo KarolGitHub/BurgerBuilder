@@ -8,12 +8,12 @@ import Aux from "../../../Hoc/hoc/Auxiliary";
 
 const Sidedrawer = (props) => {
   let attachedClasses = [classes.Sidedrawer, classes.Close];
-  if (props.isOpen) {
+  if (props.open) {
     attachedClasses = [classes.Sidedrawer, classes.Open];
   }
   return (
     <Aux>
-      <Backdrop isOpen={props.isOpen} clicked={props.closed} />
+      <Backdrop open={props.open} clicked={props.closed} />
       <div className={attachedClasses.join(" ")} onClick={props.closed}>
         <div className={classes.Logo}>
           <Logo />

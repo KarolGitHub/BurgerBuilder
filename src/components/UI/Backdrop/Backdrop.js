@@ -3,7 +3,7 @@ import React from "react";
 import classes from "./Backdrop.module.css";
 
 const backdrop = (props) =>
-  props.isOpen ? (
+  props.open ? (
     <div className={classes.Backdrop} onClick={props.clicked}></div>
   ) : null;
 
