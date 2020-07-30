@@ -25,14 +25,14 @@ export const fetchIngFail = (error, building) => {
 export const setIng = (building) => {
   return {
     type: actionTypes.SET_INGREDIENT,
-    building: building
+    building: building,
   };
 };
 
 export const initIng = (building) => {
   return {
     type: actionTypes.SET_ING,
-    building: building
+    building: building,
   };
 };
 

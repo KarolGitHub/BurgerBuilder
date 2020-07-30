@@ -19,12 +19,10 @@ const Layout = (props) => {
         open={showSidedrawer}
         closed={() => setshowSidedrawer(false)}
       />
-      <main className={classes.Content}>
-        {props.children}
-      </main>
+      <main className={classes.Content}>{props.children}</main>
     </Aux>
   );
-}
+};
 
 const mapStateToProps = (state) => {
   return {

@@ -11,91 +11,89 @@ import * as actions from "../../../store/actions/order";
 import { updateObject, isValid } from "../../../shared/utility";
 
 const ContactData = (props) => {
-
-  const [orderForm, setOrderForm] = useState(
-    {
-      name: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Your Name",
-        },
-        value: "",
-        validation: {
-          required: true,
-        },
-        valid: false,
-        touched: false,
+  const [orderForm, setOrderForm] = useState({
+    name: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "Your Name",
       },
-      street: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Your Street",
-        },
-        value: "",
-        validation: {
-          required: true,
-        },
-        valid: false,
-        touched: false,
+      value: "",
+      validation: {
+        required: true,
       },
-      zipCode: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "ZIP Code",
-        },
-        value: "",
-        validation: {
-          required: true,
-          isNumeric: true,
-          minLength: 5,
-          maxLength: 5,
-        },
-        valid: false,
-        touched: false,
+      valid: false,
+      touched: false,
+    },
+    street: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "Your Street",
       },
-      country: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Country",
-        },
-        value: "",
-        validation: {
-          required: true,
-        },
-        valid: false,
-        touched: false,
+      value: "",
+      validation: {
+        required: true,
       },
-      email: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Your E-Mail",
-        },
-        value: "",
-        validation: {
-          required: true,
-          isEmail: true,
-        },
-        valid: false,
-        touched: false,
+      valid: false,
+      touched: false,
+    },
+    zipCode: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "ZIP Code",
       },
-      deliveryMethod: {
-        elementType: "select",
-        elementConfig: {
-          options: [
-            { value: "fastest", displayValue: "Fastest" },
-            { value: "cheapest", displayValue: "Cheapest" },
-          ],
-        },
-        value: "fastest",
-        validation: null,
-        valid: true,
-      }
-    });
+      value: "",
+      validation: {
+        required: true,
+        isNumeric: true,
+        minLength: 5,
+        maxLength: 5,
+      },
+      valid: false,
+      touched: false,
+    },
+    country: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "Country",
+      },
+      value: "",
+      validation: {
+        required: true,
+      },
+      valid: false,
+      touched: false,
+    },
+    email: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "Your E-Mail",
+      },
+      value: "",
+      validation: {
+        required: true,
+        isEmail: true,
+      },
+      valid: false,
+      touched: false,
+    },
+    deliveryMethod: {
+      elementType: "select",
+      elementConfig: {
+        options: [
+          { value: "fastest", displayValue: "Fastest" },
+          { value: "cheapest", displayValue: "Cheapest" },
+        ],
+      },
+      value: "fastest",
+      validation: null,
+      valid: true,
+    },
+  });
 
   const [formIsValid, setFormValid] = useState(false);
 
@@ -122,10 +120,7 @@ const ContactData = (props) => {
   const inputChangedHandler = (event, inputID) => {
     const updatedFormElement = updateObject(orderForm[inputID], {
       value: event.target.value,
-      valid: isValid(
-        event.target.value,
-        orderForm[inputID].validation
-      ),
+      valid: isValid(event.target.value, orderForm[inputID].validation),
       touched: true,
     });
     const updatedOrderForm = updateObject(orderForm, {
@@ -172,13 +167,13 @@ const ContactData = (props) => {
           clicked={orderHandler}
         >
           ORDER
-          </Button>
+        </Button>
       </form>
     </div>
   ) : (
-      <Spinner />
-    );
-}
+    <Spinner />
+  );
+};
 
 const mapStateToProps = (state) => {
   return {

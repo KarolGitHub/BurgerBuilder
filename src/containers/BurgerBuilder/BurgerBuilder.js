@@ -11,27 +11,26 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../Hoc/withErrorHandler/withErrorHandler";
 import * as actions from "../../store/actions/index";
 const BurgerBuilder = (props) => {
-
   const [isModal, setModal] = useState(false);
 
   const dispatch = useDispatch();
 
-  const ings = useSelector(state => {
+  const ings = useSelector((state) => {
     return state.burgerBuilder.ingredients;
   });
-  const bread = useSelector(state => {
+  const bread = useSelector((state) => {
     return state.burgerBuilder.bread;
   });
-  const price = useSelector(state => {
+  const price = useSelector((state) => {
     return state.burgerBuilder.totalPrice;
   });
-  const building = useSelector(state => {
+  const building = useSelector((state) => {
     return state.burgerBuilder.building;
   });
-  const isAuth = useSelector(state => {
+  const isAuth = useSelector((state) => {
     return state.auth.token !== null;
   });
-  const loading = useSelector(state => {
+  const loading = useSelector((state) => {
     return state.burgerBuilder.loading;
   });
 
@@ -39,11 +38,13 @@ const BurgerBuilder = (props) => {
   const onIngredientRemoved = (ing) => dispatch(actions.remIng(ing));
   const onInitPurchase = () => dispatch(actions.purchaseInit());
   const onIngredientSet = useCallback(
-    (building) => dispatch(actions.setIng(building)), [dispatch]);
+    (building) => dispatch(actions.setIng(building)),
+    [dispatch]
+  );
 
   useEffect(() => {
     onIngredientSet(building);
-  }, [onIngredientSet, building])
+  }, [onIngredientSet, building]);
 
   const updatePurchaseState = (ingredients) => {
     const sum = Object.keys(ingredients)
@@ -74,25 +75,19 @@ const BurgerBuilder = (props) => {
   for (let key in disabledInfo) {
     disabledInfo[key] = disabledInfo[key] <= 0;
   }
-  return ings
-    ?
+  return ings ? (
     <Aux>
-      <Modal
-        open={isModal}
-        clicked={() => modalHandler(isModal)}
-      >
-        {!loading
-          ? (
-            <OrderSummary
-              ingredients={ings}
-              cancel={() => modalHandler(isModal)}
-              continue={purchaseContinueHandler}
-              price={price}
-            />
-          )
-          : (
-            <Spinner />
-          )}
+      <Modal open={isModal} clicked={() => modalHandler(isModal)}>
+        {!loading ? (
+          <OrderSummary
+            ingredients={ings}
+            cancel={() => modalHandler(isModal)}
+            continue={purchaseContinueHandler}
+            price={price}
+          />
+        ) : (
+          <Spinner />
+        )}
       </Modal>
 
       <Burger ingredients={ings} bread={bread} />
@@ -106,9 +101,9 @@ const BurgerBuilder = (props) => {
         isAuth={isAuth}
       />
     </Aux>
-    : (
-      <Spinner />
-    )
-}
+  ) : loading ? (
+    <Spinner />
+  ) : null;
+};
 
 export default withErrorHandler(BurgerBuilder, axios);

@@ -2,50 +2,47 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import * as actions from "../../store/actions/index";
-import axios from "../../axios-orders";
 
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import classes from "./Auth.module.css";
-import withErrorHandler from "../../Hoc/withErrorHandler/withErrorHandler";
 import { updateObject, isValid } from "../../shared/utility";
 const Auth = (props) => {
-  const [controls, setControls] = useState(
-    {
-      email: {
-        elementType: "input",
-        elementConfig: {
-          type: "email",
-          placeholder: "Email",
-        },
-        value: "",
-        validation: {
-          required: true,
-          isEmail: true,
-        },
-        valid: false,
-        touched: false,
+  const [controls, setControls] = useState({
+    email: {
+      elementType: "input",
+      elementConfig: {
+        type: "email",
+        placeholder: "Email",
       },
+      value: "",
+      validation: {
+        required: true,
+        isEmail: true,
+      },
+      valid: false,
+      touched: false,
+    },
 
-      password: {
-        elementType: "input",
-        elementConfig: {
-          type: "password",
-          placeholder: "Password",
-        },
-        value: "",
-        validation: {
-          required: true,
-          minLength: 6,
-          maxLength: 20,
-        },
-        valid: false,
-        touched: false,
-      }
-    });
+    password: {
+      elementType: "input",
+      elementConfig: {
+        type: "password",
+        placeholder: "Password",
+      },
+      value: "",
+      validation: {
+        required: true,
+        minLength: 6,
+        maxLength: 20,
+      },
+      valid: false,
+      touched: false,
+    },
+  });
 
-  const [isSignup, setSignup] = useState(true);
+  const [isSignup, setSignup] = useState(false);
 
   const inputChangedHandler = (event, inputID) => {
     const updatedControls = updateObject(controls, {
@@ -64,11 +61,7 @@ const Auth = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    props.onAuth(
-      controls.email.value,
-      controls.password.value,
-      isSignup
-    );
+    props.onAuth(controls.email.value, controls.password.value, isSignup);
   };
 
   const switchAuthModeHandler = () => {
@@ -96,7 +89,7 @@ const Auth = (props) => {
   ));
 
   let error = props.error && (
-    <p style={{ color: "red", font: "bold" }}>{props.error.message}</p>
+    <p style={{ color: "red", font: "bold" }}>{props.error}</p>
   );
 
   return !props.loading ? (
@@ -112,12 +105,12 @@ const Auth = (props) => {
         </Button>
       </div>
     ) : (
-        <Redirect to="/" />
-      )
+      <Redirect to="/" />
+    )
   ) : (
-      <Spinner />
-    );
-}
+    <Spinner />
+  );
+};
 
 const mapStateToProps = (state) => {
   return {
@@ -134,7 +127,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withErrorHandler(Auth, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

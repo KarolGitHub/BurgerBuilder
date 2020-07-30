@@ -11,23 +11,22 @@ const Orders = (props) => {
   const { onFetchOrders, token, userId } = props;
   useEffect(() => {
     onFetchOrders(token, userId);
-  }, [onFetchOrders, token, userId])
+  }, [onFetchOrders, token, userId]);
 
-  return !props.loading
-    ? (
-      <div>
-        {props.orders.map((order) => (
-          <Order
-            key={order.id}
-            ingredients={order.ingredients}
-            price={+order.price}
-          />
-        ))}
-      </div>)
-    : (
-      <Spinner />
-    );
-}
+  return !props.loading ? (
+    <div>
+      {props.orders.map((order) => (
+        <Order
+          key={order.id}
+          ingredients={order.ingredients}
+          price={+order.price}
+        />
+      ))}
+    </div>
+  ) : (
+    <Spinner />
+  );
+};
 
 const mapStateToProps = (state) => {
   return {

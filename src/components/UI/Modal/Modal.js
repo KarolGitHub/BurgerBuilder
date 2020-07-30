@@ -13,15 +13,17 @@ const Modal = (props) => {
         style={{
           transform: props.open ? "translate(0)" : "translate(-100vh)",
           opacity: props.open ? "1" : "0",
-        }}>
+        }}
+      >
         {props.children}
       </div>
     </Aux>
   );
-}
+};
 
-export default React.memo(Modal,
-  (prevProps, nextProps) => {
-    return nextProps.open === prevProps.open &&
-      nextProps.children === prevProps.children;
-  });
+export default React.memo(Modal, (prevProps, nextProps) => {
+  return (
+    nextProps.open === prevProps.open &&
+    nextProps.children === prevProps.children
+  );
+});

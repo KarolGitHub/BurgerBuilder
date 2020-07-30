@@ -3,7 +3,6 @@ import classes from "./BurgerIngredient.module.css";
 import PropTypes from "prop-types";
 
 const BurgerIngredient = (props) => {
-
   let ingredient = null;
 
   switch (props.type) {
@@ -37,8 +36,7 @@ const BurgerIngredient = (props) => {
       ingredient = null;
   }
   return ingredient;
-}
-
+};
 
 BurgerIngredient.propTypes = {
   // type: PropTypes.string.oneOf(['bread-bottom', 'bread-top', 'meat', 'cheese', 'salad', 'bacon']).isRequired,

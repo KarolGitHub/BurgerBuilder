@@ -1,29 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-export default httpClient => {
+export default (httpClient) => {
   const [error, setError] = useState(null);
-
-  const reqInterceptor = httpClient.interceptors.request.use(req => {
+  const { request, response } = httpClient.interceptors;
+  const reqInterceptor = request.use((req) => {
     setError(null);
     return req;
   });
-  const resInterceptor = httpClient.interceptors.response.use(
-    res => res,
-    err => {
+  const resInterceptor = response.use(
+    (res) => res,
+    (err) => {
       setError(err);
+      return Promise.reject(err);
     }
   );
 
   useEffect(() => {
     return () => {
-      httpClient.interceptors.request.eject(reqInterceptor);
-      httpClient.interceptors.response.eject(resInterceptor);
+      request.eject(reqInterceptor);
+      response.eject(resInterceptor);
     };
-  }, [reqInterceptor, resInterceptor, httpClient]);
+  }, [reqInterceptor, resInterceptor, request, response]);
 
   const errorConfirmedHandler = () => {
     setError(null);
   };
 
   return [error, errorConfirmedHandler];
-}
+};

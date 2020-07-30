@@ -1,14 +1,21 @@
-export { addIng, remIng, setIng, setIngredients, initIng, fetchIngFail} from "./burgerBuilder";
-export { 
-  purchaseBurger, 
-  purchaseInit, 
+export {
+  addIng,
+  remIng,
+  setIng,
+  setIngredients,
+  initIng,
+  fetchIngFail,
+} from "./burgerBuilder";
+export {
+  purchaseBurger,
+  purchaseInit,
   fetchOrders,
   purchaseStart,
   purchaseSuccess,
   purchaseFail,
   fetchInit,
   fetchSuccess,
-  fetchFail
+  fetchFail,
 } from "./order";
 
 export {
