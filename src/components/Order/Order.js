@@ -1,7 +1,9 @@
 import React from "react";
 
+import Burger from '../Burger/Burger';
 import classes from "./Order.module.css";
-const order = (props) => {
+
+const Order = React.memo((props) => {
   const ingredients = [];
 
   for (let ingName in props.ingredients) {
@@ -11,11 +13,18 @@ const order = (props) => {
     });
   }
 
+  ingredients.push({
+    name: 'bread',
+    amount: props.bread
+  });
+
   const ingredientOutput = ingredients.map((ig) => {
     return (
-      <span className={classes.Span} key={ig.name}>
-        {ig.name} ({ig.amount})
-      </span>
+      ig.amount > 0 && (
+        <span className={classes.Span} key={ig.name}>
+          {ig.name} ({ig.amount})
+        </span>
+      )
     );
   });
 
@@ -26,8 +35,20 @@ const order = (props) => {
       <p>
         Price: <strong>{props.price.toFixed(2)}</strong>
       </p>
+      {props.expand && (
+        <Burger
+          ingredients={props.ingredients}
+          bread={props.bread}
+        />
+      )}
+      <button
+        className={[classes.BurgerButton, classes[props.btnType]].join(" ")}
+        onClick={props.clicked}
+      >
+        {props.expand ? "Hide Burger" : "Show Burger"}
+      </button>
     </div>
   );
-};
+});
 
-export default order;
+export default Order;

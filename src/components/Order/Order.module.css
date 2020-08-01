@@ -14,3 +14,22 @@
     border: 1px solid #ccc;
     padding: 5px;
 }
+
+.BurgerButton {
+    margin: 10px auto;
+    color: #966909;
+    outline: none;
+    border: 1px solid #966909;
+    font-family: inherit;
+    font-size: 1.2em;
+    padding: 10px 20px;
+    box-shadow: 2px 2px 2px #966909;
+}
+
+.Success {
+    background-color: #35da35;
+}
+
+.Danger {
+    background-color: #ff4949;
+}
