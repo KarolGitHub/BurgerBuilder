@@ -18,6 +18,12 @@ const BurgerBuilder = (props) => {
   const ings = useSelector((state) => {
     return state.burgerBuilder.ingredients;
   });
+  const ingsPrices = useSelector((state) => {
+    return state.burgerBuilder.ingredientsPrices;
+  });
+  const amount = useSelector((state) => {
+    return state.burgerBuilder.amount;
+  });
   const bread = useSelector((state) => {
     return state.burgerBuilder.bread;
   });
@@ -68,19 +74,18 @@ const BurgerBuilder = (props) => {
     onInitPurchase();
   };
 
-  let disabledInfo = {
+  let ingsInfo = {
     ...ings,
     bread: bread,
+    amount: amount,
   };
-  for (let key in disabledInfo) {
-    disabledInfo[key] = disabledInfo[key] <= 0;
-  }
+
   return ings ? (
     <Aux>
       <Modal open={isModal} clicked={() => modalHandler(isModal)}>
         {!loading ? (
           <OrderSummary
-            ingredients={ings}
+            ingredients={ingsInfo}
             cancel={() => modalHandler(isModal)}
             continue={purchaseContinueHandler}
             price={price}
@@ -94,11 +99,12 @@ const BurgerBuilder = (props) => {
       <BuildControls
         ingredientAdded={onIngredientAdded}
         ingredientRemoved={onIngredientRemoved}
-        disabled={disabledInfo}
         price={price}
+        ingsPrices={ingsPrices}
         purchaseable={updatePurchaseState(ings)}
         purchased={() => modalHandler(isModal)}
         isAuth={isAuth}
+        ingredientsInfo={ingsInfo}
       />
     </Aux>
   ) : loading ? (

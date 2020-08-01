@@ -36,10 +36,11 @@ export const initIng = (building) => {
   };
 };
 
-export const setIngredients = (ing, building) => {
+export const setIngredients = (ing, prices, building) => {
   return {
     type: actionTypes.SET_ING,
     ingredients: ing,
+    ingredientsPrices: prices,
     building: building,
   };
 };

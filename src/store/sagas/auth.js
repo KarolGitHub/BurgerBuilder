@@ -48,7 +48,7 @@ export function* authUserSaga(action) {
       // Something happened in setting up the request and triggered an Error
       yield put(actions.authFail(error.message));
     } else {
-      // should not be executed
+      // Unexpected Error
       yield put(actions.authFail("Oops something went wrong!"));
     }
   }

@@ -14,6 +14,7 @@ const Checkout = (props) => {
     <div>
       <CheckoutSummary
         ingredients={{ ...props.ings, bread: props.bread }}
+        amount={props.amount}
         checkoutCancelled={cancelHandler}
         checkoutContinued={continueHandler}
       />
@@ -30,6 +31,7 @@ const Checkout = (props) => {
 const mapStateToProps = (state) => {
   return {
     ings: state.burgerBuilder.ingredients,
+    amount: state.burgerBuilder.amount,
     bread: state.burgerBuilder.bread,
     purchased: state.order.purchased,
   };

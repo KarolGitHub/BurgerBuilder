@@ -2,32 +2,28 @@ import * as actionTypes from "../actions/actionsTypes";
 import { updateObject } from "../../shared/utility";
 
 const initialState = {
-  /* ingredients: {
-        salad: 0,
-        bacon: 0,
-        cheese: 0,
-        meat: 0
-    }, */
   ingredients: null,
+  ingredientsPrices: null,
   bread: 0,
+  amount: 1,
   totalPrice: 4,
   error: false,
   building: false,
 };
 
-const ING_PRICES = {
-  salad: 0.2,
-  cheese: 0.3,
-  meat: 1,
-  bacon: 0.6,
-  bread: 0.5,
-};
-
 const addIng = (state, action) => {
-  if (action.ingName === "bread") {
+  if (action.ingName === "amount") {
+    return updateObject(state, {
+      amount: state.amount + 1,
+      totalPrice: (state.amount + 1) * (state.totalPrice / state.amount),
+      building: true,
+    });
+  } else if (action.ingName === "bread") {
     return updateObject(state, {
       bread: state.bread + 1,
-      totalPrice: state.totalPrice + ING_PRICES[action.ingName],
+      totalPrice:
+        state.totalPrice +
+        state.amount * state.ingredientsPrices[action.ingName],
       building: true,
     });
   } else {
@@ -35,17 +31,27 @@ const addIng = (state, action) => {
       ingredients: updateObject(state.ingredients, {
         [action.ingName]: state.ingredients[action.ingName] + 1,
       }),
-      totalPrice: state.totalPrice + ING_PRICES[action.ingName],
+      totalPrice:
+        state.totalPrice +
+        state.amount * state.ingredientsPrices[action.ingName],
       building: true,
     });
   }
 };
 
 const remIng = (state, action) => {
-  if (action.ingName === "bread" && state.bread > 0) {
+  if (action.ingName === "amount" && state.amount > 1) {
+    return updateObject(state, {
+      amount: state.amount - 1,
+      totalPrice: (state.amount - 1) * (state.totalPrice / state.amount),
+      building: true,
+    });
+  } else if (action.ingName === "bread" && state.bread > 0) {
     return updateObject(state, {
       bread: state.bread - 1,
-      totalPrice: state.totalPrice - ING_PRICES[action.ingName],
+      totalPrice:
+        state.totalPrice -
+        state.amount * state.ingredientsPrices[action.ingName],
       building: true,
     });
   } else if (state.ingredients[action.ingName] > 0) {
@@ -53,7 +59,9 @@ const remIng = (state, action) => {
       ingredients: updateObject(state.ingredients, {
         [action.ingName]: state.ingredients[action.ingName] - 1,
       }),
-      totalPrice: state.totalPrice - ING_PRICES[action.ingName],
+      totalPrice:
+        state.totalPrice -
+        state.amount * state.ingredientsPrices[action.ingName],
       building: true,
     });
   } else return state;
@@ -61,20 +69,29 @@ const remIng = (state, action) => {
 
 const setIng = (state, action) => {
   if (action.building) {
-    // return updateObject(state, { building: false });
     return state;
   } else {
     let sumPrice = 4;
     for (let ing in action.ingredients) {
-      if (action.ingredients[ing] > 0) sumPrice += ING_PRICES[ing];
+      if (action.ingredients[ing] > 0)
+        sumPrice += action.ingredientsPrices[ing];
     }
-    sumPrice += state.bread * ING_PRICES["bread"];
+    sumPrice =
+      state.amount *
+      (sumPrice + state.bread * action.ingredientsPrices["bread"]);
     return updateObject(state, {
       ingredients: {
         salad: action.ingredients.salad,
         bacon: action.ingredients.bacon,
         cheese: action.ingredients.cheese,
         meat: action.ingredients.meat,
+      },
+      ingredientsPrices: {
+        salad: action.ingredientsPrices.salad,
+        bacon: action.ingredientsPrices.bacon,
+        cheese: action.ingredientsPrices.cheese,
+        meat: action.ingredientsPrices.meat,
+        bread: action.ingredientsPrices.bread,
       },
       totalPrice: sumPrice,
       error: false,

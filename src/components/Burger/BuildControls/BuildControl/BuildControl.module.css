@@ -9,8 +9,7 @@
     display: block;
     font: inherit;
     padding: 5px;
-    margin: 0 5px;
-    width: 80px;
+    width: 60px;
     border: 1px solid #AA6817;
     cursor: pointer;
     outline: none;
@@ -33,6 +32,7 @@
     padding: 10px;
     font-weight: bold;
     width: 80px;
+    white-space: pre-wrap;
 }
 
 .BuildControl .Less {  
@@ -40,10 +40,20 @@
     color: white;
 }
 
+.BuildControl .Amount {
+    text-align: center;
+    display: block;
+    font: inherit;
+    padding: 5px;
+    width: 40px;
+    border: 1px solid #AA6817;
+    outline: none;
+}
 .BuildControl .More {
     background-color: #8F5E1E;
     color: white;
 }
+
 
 .BuildControl .Less:hover, .BuildControl .Less:active {  
     background-color: #DAA972;

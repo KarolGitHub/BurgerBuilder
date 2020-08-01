@@ -10,6 +10,7 @@ const controls = [
   { label: "Meat", type: "meat" },
   { label: "Bacon", type: "bacon" },
   { label: "Bread", type: "bread" },
+  { label: "Burger amount", type: "amount" },
 ];
 
 const buildControls = (props) => (
@@ -23,7 +24,8 @@ const buildControls = (props) => (
         label={control.label}
         added={() => props.ingredientAdded(control.type)}
         removed={() => props.ingredientRemoved(control.type)}
-        disabled={props.disabled[control.type]}
+        amount={props.ingredientsInfo[control.type]}
+        price={control.type !== "amount" && props.ingsPrices[control.type]}
       />
     ))}
     <button
@@ -37,11 +39,12 @@ const buildControls = (props) => (
 );
 
 buildControls.propTypes = {
-  price: PropTypes.number.isRequired,
   ingredientAdded: PropTypes.func.isRequired,
   ingredientRemoved: PropTypes.func.isRequired,
-  disabled: PropTypes.object.isRequired,
+  price: PropTypes.number.isRequired,
   purchaseable: PropTypes.bool.isRequired,
   purchased: PropTypes.func.isRequired,
+  isAuth: PropTypes.bool.isRequired,
+  ingredientsInfo: PropTypes.object.isRequired,
 };
 export default buildControls;

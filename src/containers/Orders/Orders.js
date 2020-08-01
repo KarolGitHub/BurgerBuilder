@@ -20,7 +20,7 @@ const Orders = (props) => {
     } else {
       setBurger(null);
     }
-  }
+  };
 
   return !props.loading ? (
     <div>
@@ -33,13 +33,13 @@ const Orders = (props) => {
           price={+order.price}
           expand={showBurger === order.id ? true : false}
           btnType={showBurger === order.id ? "Danger" : "Success"}
-          clicked={() => showBurgerHandler(order.id)} 
+          clicked={() => showBurgerHandler(order.id)}
         />
       ))}
     </div>
   ) : (
-      <Spinner />
-    );
+    <Spinner />
+  );
 };
 
 const mapStateToProps = (state) => {

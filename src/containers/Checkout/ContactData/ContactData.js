@@ -99,17 +99,15 @@ const ContactData = (props) => {
 
   const orderHandler = (event) => {
     event.preventDefault();
-    // console.log(props.ingredients);
-    // alert('You choose to continue!');
     const formData = {};
     for (let formElementID in orderForm) {
       formData[formElementID] = orderForm[formElementID].value;
     }
 
     const order = {
-      ingredients: props.ings,
-      bread: props.bread,
-      price: props.price,
+      ingredients: updateObject(props.ings, { bread: props.bread }),
+      price: props.price.toFixed(2),
+      amount: props.amount,
       orderData: formData,
       userId: props.userId,
     };
@@ -178,6 +176,7 @@ const ContactData = (props) => {
 const mapStateToProps = (state) => {
   return {
     ings: state.burgerBuilder.ingredients,
+    amount: state.burgerBuilder.amount,
     bread: state.burgerBuilder.bread,
     price: state.burgerBuilder.totalPrice,
     loading: state.order.loading,

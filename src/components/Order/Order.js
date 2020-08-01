@@ -1,6 +1,6 @@
 import React from "react";
 
-import Burger from '../Burger/Burger';
+import Burger from "../Burger/Burger";
 import classes from "./Order.module.css";
 
 const Order = React.memo((props) => {
@@ -14,8 +14,8 @@ const Order = React.memo((props) => {
   }
 
   ingredients.push({
-    name: 'bread',
-    amount: props.bread
+    name: "bread",
+    amount: props.bread,
   });
 
   const ingredientOutput = ingredients.map((ig) => {
@@ -36,10 +36,7 @@ const Order = React.memo((props) => {
         Price: <strong>{props.price.toFixed(2)}</strong>
       </p>
       {props.expand && (
-        <Burger
-          ingredients={props.ingredients}
-          bread={props.bread}
-        />
+        <Burger ingredients={props.ingredients} bread={props.bread} />
       )}
       <button
         className={[classes.BurgerButton, classes[props.btnType]].join(" ")}

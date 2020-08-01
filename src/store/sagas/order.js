@@ -32,6 +32,16 @@ export function* fetchOrdersSaga(action) {
     }
     yield put(actions.fetchSuccess(orders));
   } catch (error) {
-    yield put(actions.fetchFail(error));
+    if (error.response) {
+      //  The request was made and the server responded with a
+      //  status code that falls out of the range of 2xx
+      yield put(actions.fetchFail(error.response.data.error.message));
+    } else if (error.message) {
+      // Something happened in setting up the request and triggered an Error
+      yield put(actions.fetchFail(error.message));
+    } else {
+      // Unexpected Error
+      yield put(actions.fetchFail("Oops something went wrong!"));
+    }
   }
 }
