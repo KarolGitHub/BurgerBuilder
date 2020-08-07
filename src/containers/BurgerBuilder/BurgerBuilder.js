@@ -24,10 +24,11 @@ const BurgerBuilder = (props) => {
   const amount = useSelector((state) => {
     return state.burgerBuilder.amount;
   });
-  const bread = useSelector((state) => {
-    return state.burgerBuilder.bread;
-  });
+
   const price = useSelector((state) => {
+    return state.burgerBuilder.burgerPrice;
+  });
+  const totalPrice = useSelector((state) => {
     return state.burgerBuilder.totalPrice;
   });
   const building = useSelector((state) => {
@@ -39,10 +40,14 @@ const BurgerBuilder = (props) => {
   const loading = useSelector((state) => {
     return state.burgerBuilder.loading;
   });
+  const error = useSelector((state) => {
+    return state.burgerBuilder.error;
+  });
 
   const onIngredientAdded = (ing) => dispatch(actions.addIng(ing));
   const onIngredientRemoved = (ing) => dispatch(actions.remIng(ing));
   const onInitPurchase = () => dispatch(actions.purchaseInit());
+  const onBurgerAdded = () => dispatch(actions.addBurger());
   const onIngredientSet = useCallback(
     (building) => dispatch(actions.setIng(building)),
     [dispatch]
@@ -69,47 +74,57 @@ const BurgerBuilder = (props) => {
     }
   };
 
-  const purchaseContinueHandler = () => {
+  const purchaseFinishHandler = () => {
     props.history.push("/checkout");
     onInitPurchase();
   };
 
+  const purchaseContinueHandler = () => {
+    onBurgerAdded();
+    modalHandler(isModal);
+  };
+
   let ingsInfo = {
     ...ings,
-    bread: bread,
     amount: amount,
   };
 
-  return ings ? (
-    <Aux>
-      <Modal open={isModal} clicked={() => modalHandler(isModal)}>
-        {!loading ? (
-          <OrderSummary
-            ingredients={ingsInfo}
-            cancel={() => modalHandler(isModal)}
-            continue={purchaseContinueHandler}
-            price={price}
-          />
-        ) : (
-          <Spinner />
-        )}
-      </Modal>
+  return (
+    !error &&
+    (ings ? (
+      <Aux>
+        <Modal open={isModal} clicked={() => modalHandler(isModal)}>
+          {!loading ? (
+            <OrderSummary
+              ingredients={ingsInfo}
+              cancel={() => modalHandler(isModal)}
+              continue={purchaseContinueHandler}
+              finish={purchaseFinishHandler}
+              price={price}
+              totalPrice={totalPrice}
+            />
+          ) : (
+            <Spinner />
+          )}
+        </Modal>
 
-      <Burger ingredients={ings} bread={bread} />
-      <BuildControls
-        ingredientAdded={onIngredientAdded}
-        ingredientRemoved={onIngredientRemoved}
-        price={price}
-        ingsPrices={ingsPrices}
-        purchaseable={updatePurchaseState(ings)}
-        purchased={() => modalHandler(isModal)}
-        isAuth={isAuth}
-        ingredientsInfo={ingsInfo}
-      />
-    </Aux>
-  ) : loading ? (
-    <Spinner />
-  ) : null;
+        <Burger ingredients={ings} />
+        <BuildControls
+          ingredientAdded={onIngredientAdded}
+          ingredientRemoved={onIngredientRemoved}
+          price={price}
+          totalPrice={totalPrice}
+          ingsPrices={ingsPrices}
+          purchaseable={updatePurchaseState(ings)}
+          purchased={() => modalHandler(isModal)}
+          isAuth={isAuth}
+          ingredientsInfo={ingsInfo}
+        />
+      </Aux>
+    ) : (
+      <Spinner />
+    ))
+  );
 };
 
 export default withErrorHandler(BurgerBuilder, axios);

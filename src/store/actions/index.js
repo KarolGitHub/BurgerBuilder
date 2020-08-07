@@ -5,6 +5,10 @@ export {
   setIngredients,
   initIng,
   fetchIngFail,
+  addBurger,
+  rebuildBurger,
+  deleteBurger,
+  purchaseEnd,
 } from "./burgerBuilder";
 export {
   purchaseBurger,

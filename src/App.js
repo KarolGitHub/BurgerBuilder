@@ -37,6 +37,10 @@ const App = (props) => {
     <Switch>
       <Route path="/" exact component={BurgerBuilder} />
       <Route path="/checkout" render={(props) => <Checkout {...props} />} />
+      <Route
+        path="/checkout/contact-data"
+        render={(props) => <Checkout {...props} />}
+      />
       <Route path="/orders" render={(props) => <Orders {...props} />} />
       <Route path="/login" render={(props) => <Auth {...props} />} />
       <Route path="/logout" component={Logout} />

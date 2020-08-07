@@ -9,7 +9,9 @@ const buildControl = (props) => (
       {props.price && `\n$` + props.price}
     </div>
     <button
-      disabled={props.label === "Amount" ? props.amount < 2 : !props.amount}
+      disabled={
+        props.label === "Burger amount" ? props.amount < 2 : !props.amount
+      }
       className={classes.Less}
       onClick={props.removed}
     >

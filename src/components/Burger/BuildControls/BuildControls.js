@@ -16,7 +16,10 @@ const controls = [
 const buildControls = (props) => (
   <div className={classes.BuildControls}>
     <p>
-      Total Price: <strong>{props.price.toFixed(2)}</strong>
+      Burger Price: <strong>${Math.abs(props.price).toFixed(2)}</strong>
+    </p>
+    <p>
+      Order Price: <strong>${Math.abs(props.totalPrice).toFixed(2)}</strong>
     </p>
     {controls.map((control) => (
       <BuildControl
@@ -42,6 +45,7 @@ buildControls.propTypes = {
   ingredientAdded: PropTypes.func.isRequired,
   ingredientRemoved: PropTypes.func.isRequired,
   price: PropTypes.number.isRequired,
+  totalPrice: PropTypes.number.isRequired,
   purchaseable: PropTypes.bool.isRequired,
   purchased: PropTypes.func.isRequired,
   isAuth: PropTypes.bool.isRequired,

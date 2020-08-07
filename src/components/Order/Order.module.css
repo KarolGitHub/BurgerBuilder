@@ -19,6 +19,7 @@
     margin: 10px auto;
     color: #966909;
     outline: none;
+    cursor: pointer;
     border: 1px solid #966909;
     font-family: inherit;
     font-size: 1.2em;

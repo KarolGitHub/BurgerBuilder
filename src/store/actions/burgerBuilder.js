@@ -44,3 +44,29 @@ export const setIngredients = (ing, prices, building) => {
     building: building,
   };
 };
+
+export const addBurger = () => {
+  return {
+    type: actionTypes.ADD_BURGER,
+  };
+};
+
+export const rebuildBurger = (id) => {
+  return {
+    type: actionTypes.REBUILD_BURGER,
+    id: id,
+  };
+};
+
+export const deleteBurger = (id) => {
+  return {
+    type: actionTypes.REBUILD_BURGER,
+    id: id,
+  };
+};
+
+export const purchaseEnd = () => {
+  return {
+    type: actionTypes.PURCHASE_END,
+  };
+};

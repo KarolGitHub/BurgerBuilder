@@ -3,27 +3,21 @@ import { updateObject } from "../../shared/utility";
 
 const initialState = {
   ingredients: null,
+  order: [],
   ingredientsPrices: null,
-  bread: 0,
   amount: 1,
-  totalPrice: 4,
+  burgerPrice: 4,
+  totalPrice: 0,
   error: false,
   building: false,
+  loading: false,
 };
 
 const addIng = (state, action) => {
   if (action.ingName === "amount") {
     return updateObject(state, {
       amount: state.amount + 1,
-      totalPrice: (state.amount + 1) * (state.totalPrice / state.amount),
-      building: true,
-    });
-  } else if (action.ingName === "bread") {
-    return updateObject(state, {
-      bread: state.bread + 1,
-      totalPrice:
-        state.totalPrice +
-        state.amount * state.ingredientsPrices[action.ingName],
+      burgerPrice: (state.amount + 1) * (state.burgerPrice / state.amount),
       building: true,
     });
   } else {
@@ -31,8 +25,8 @@ const addIng = (state, action) => {
       ingredients: updateObject(state.ingredients, {
         [action.ingName]: state.ingredients[action.ingName] + 1,
       }),
-      totalPrice:
-        state.totalPrice +
+      burgerPrice:
+        state.burgerPrice +
         state.amount * state.ingredientsPrices[action.ingName],
       building: true,
     });
@@ -43,15 +37,7 @@ const remIng = (state, action) => {
   if (action.ingName === "amount" && state.amount > 1) {
     return updateObject(state, {
       amount: state.amount - 1,
-      totalPrice: (state.amount - 1) * (state.totalPrice / state.amount),
-      building: true,
-    });
-  } else if (action.ingName === "bread" && state.bread > 0) {
-    return updateObject(state, {
-      bread: state.bread - 1,
-      totalPrice:
-        state.totalPrice -
-        state.amount * state.ingredientsPrices[action.ingName],
+      burgerPrice: (state.amount - 1) * (state.burgerPrice / state.amount),
       building: true,
     });
   } else if (state.ingredients[action.ingName] > 0) {
@@ -59,8 +45,8 @@ const remIng = (state, action) => {
       ingredients: updateObject(state.ingredients, {
         [action.ingName]: state.ingredients[action.ingName] - 1,
       }),
-      totalPrice:
-        state.totalPrice -
+      burgerPrice:
+        state.burgerPrice -
         state.amount * state.ingredientsPrices[action.ingName],
       building: true,
     });
@@ -76,13 +62,12 @@ const setIng = (state, action) => {
       if (action.ingredients[ing] > 0)
         sumPrice += action.ingredientsPrices[ing];
     }
-    sumPrice =
-      state.amount *
-      (sumPrice + state.bread * action.ingredientsPrices["bread"]);
+
     return updateObject(state, {
       ingredients: {
         salad: action.ingredients.salad,
         bacon: action.ingredients.bacon,
+        bread: action.ingredients.bread,
         cheese: action.ingredients.cheese,
         meat: action.ingredients.meat,
       },
@@ -93,10 +78,44 @@ const setIng = (state, action) => {
         meat: action.ingredientsPrices.meat,
         bread: action.ingredientsPrices.bread,
       },
-      totalPrice: sumPrice,
+      burgerPrice: sumPrice,
       error: false,
     });
   }
+};
+
+const addBurger = (state) => {
+  return updateObject(state, {
+    order: state.order.concat({
+      ingredients: updateObject(state.ingredients),
+      burgerPrice: state.burgerPrice,
+      amount: state.amount,
+    }),
+    totalPrice: state.totalPrice + state.burgerPrice,
+  });
+};
+
+const rebuildBurger = (state, action) => {
+  const currBurger = { ...state.order[action.id] };
+  return updateObject(state, {
+    order: state.order.filter((_, index) => index !== +action.id),
+    ingredients: updateObject(currBurger.ingredients),
+    amount: currBurger.amount,
+    totalPrice: state.totalPrice - currBurger.burgerPrice,
+    burgerPrice: currBurger.burgerPrice,
+  });
+};
+
+const deleteBurger = (state, action) => {
+  const currBurger = { ...state.order[action.id] };
+  return updateObject(state, {
+    order: state.order.filter((_, index) => index !== +action.id),
+    totalPrice: state.totalPrice - currBurger.burgerPrice,
+  });
+};
+
+const purchaseEnd = () => {
+  return updateObject(initialState, { building: false });
 };
 
 const reducer = (state = initialState, action) => {
@@ -107,6 +126,14 @@ const reducer = (state = initialState, action) => {
       return remIng(state, action);
     case actionTypes.SET_ING:
       return setIng(state, action);
+    case actionTypes.ADD_BURGER:
+      return addBurger(state);
+    case actionTypes.REBUILD_BURGER:
+      return rebuildBurger(state, action);
+    case actionTypes.DELETE_BURGER:
+      return deleteBurger(state, action);
+    case actionTypes.PURCHASE_END:
+      return purchaseEnd();
     case actionTypes.FETCH_ING_FAILED:
       return updateObject(state, { error: action.error });
     default:

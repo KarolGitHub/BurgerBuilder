@@ -105,9 +105,8 @@ const ContactData = (props) => {
     }
 
     const order = {
-      ingredients: updateObject(props.ings, { bread: props.bread }),
-      price: props.price.toFixed(2),
-      amount: props.amount,
+      order: updateObject(props.order),
+      price: Math.abs(props.price.toFixed(2)),
       orderData: formData,
       userId: props.userId,
     };
@@ -175,9 +174,7 @@ const ContactData = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    ings: state.burgerBuilder.ingredients,
-    amount: state.burgerBuilder.amount,
-    bread: state.burgerBuilder.bread,
+    order: state.burgerBuilder.order,
     price: state.burgerBuilder.totalPrice,
     loading: state.order.loading,
     token: state.auth.token,

@@ -30,8 +30,8 @@ export const purchaseBurger = (orderData, token) => {
 };
 
 export const purchaseInit = () => {
-  return (dispatch) => {
-    dispatch({ type: actionTypes.PURCHASE_INIT });
+  return {
+    type: actionTypes.PURCHASE_INIT,
   };
 };
 

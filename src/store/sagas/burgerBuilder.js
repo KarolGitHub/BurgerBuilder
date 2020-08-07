@@ -17,7 +17,7 @@ export function* setIngSaga(action) {
       if (error.response) {
         //  The request was made and the server responded with a
         //  status code that falls out of the range of 2xx
-        yield put(actions.fetchIngFail(error.response.data.error.message));
+        yield put(actions.fetchIngFail(error.response.data.error));
       } else if (error.message) {
         // Something happened in setting up the request and triggered an Error
         yield put(actions.fetchIngFail(error.message));

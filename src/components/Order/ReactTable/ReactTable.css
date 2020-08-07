@@ -1,0 +1,33 @@
+.rtable {
+  /* display: block;
+  max-width: min-content; */
+  display: inline-block;
+  vertical-align: top;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 705px) {
+
+  .rtable thead tr th:nth-child(3),
+  .rtable tbody tr td:nth-child(3) {
+    display: none;
+  }
+}
+
+.rtable th {
+  font-size: 11px;
+  text-align: left;
+  text-transform: uppercase;
+  background: #f2f0e6;
+}
+
+.rtable th,
+.rtable td {
+  padding: 6px 12px;
+  border: 1px solid #d9d7ce;
+}
