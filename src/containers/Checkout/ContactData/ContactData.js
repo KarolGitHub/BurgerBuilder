@@ -104,11 +104,26 @@ const ContactData = (props) => {
       formData[formElementID] = orderForm[formElementID].value;
     }
 
+    const month = new Date().getMonth() + 1;
+    const date =
+      new Date().getDate() +
+      "/" +
+      month +
+      "/" +
+      new Date().getFullYear() +
+      " " +
+      new Date().getHours() +
+      ":" +
+      new Date().getMinutes() +
+      ":" +
+      new Date().getSeconds();
+
     const order = {
       order: updateObject(props.order),
       price: Math.abs(props.price.toFixed(2)),
       orderData: formData,
       userId: props.userId,
+      date: date,
     };
 
     props.onOrderBurger(order, props.token);

@@ -4,19 +4,19 @@ import Aux from "../../../Hoc/hoc/Auxiliary";
 import Button from "../../UI/Button/Button";
 
 const OrderSummary = (props) => {
-  const ingredientSummary = Object.keys(props.ingredients)
+  const ingredientSummary = Object.keys(props.ingredientsInfo)
     .filter((igKey) => igKey !== "amount")
     .map((igKey) => (
       <li key={igKey}>
         <span style={{ textTransform: "capitalize" }}>{igKey}</span>:{" "}
-        {props.ingredients[igKey]}
+        {props.ingredientsInfo[igKey]}
       </li>
     ));
   return (
     <Aux>
       <h3>Your Order</h3>
       <ul>{ingredientSummary}</ul>
-      <p>Burger amount: {props.ingredients.amount}</p>
+      <p>Burger amount: {props.ingredientsInfo.amount}</p>
       <p>
         <strong>Burger Price: ${Math.abs(props.price.toFixed(2))}</strong>
       </p>

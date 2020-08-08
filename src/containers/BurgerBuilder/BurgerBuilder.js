@@ -10,6 +10,8 @@ import axios from "../../axios-orders";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../Hoc/withErrorHandler/withErrorHandler";
 import * as actions from "../../store/actions/index";
+import { updateObject } from "../../shared/utility";
+
 const BurgerBuilder = (props) => {
   const [isModal, setModal] = useState(false);
 
@@ -24,7 +26,6 @@ const BurgerBuilder = (props) => {
   const amount = useSelector((state) => {
     return state.burgerBuilder.amount;
   });
-
   const price = useSelector((state) => {
     return state.burgerBuilder.burgerPrice;
   });
@@ -43,6 +44,9 @@ const BurgerBuilder = (props) => {
   const error = useSelector((state) => {
     return state.burgerBuilder.error;
   });
+  const purchased = useSelector((state) => {
+    return state.order.purchased;
+  });
 
   const onIngredientAdded = (ing) => dispatch(actions.addIng(ing));
   const onIngredientRemoved = (ing) => dispatch(actions.remIng(ing));
@@ -56,6 +60,13 @@ const BurgerBuilder = (props) => {
   useEffect(() => {
     onIngredientSet(building);
   }, [onIngredientSet, building]);
+
+  useEffect(() => {
+    if (purchased && !building) {
+      setModal(!isModal);
+    }
+    //eslint-disable-next-line
+  }, [purchased, building]);
 
   const updatePurchaseState = (ingredients) => {
     const sum = Object.keys(ingredients)
@@ -84,10 +95,7 @@ const BurgerBuilder = (props) => {
     modalHandler(isModal);
   };
 
-  let ingsInfo = {
-    ...ings,
-    amount: amount,
-  };
+  const ingsInfo = updateObject(ings, { amount: amount });
 
   return (
     !error &&
@@ -95,19 +103,22 @@ const BurgerBuilder = (props) => {
       <Aux>
         <Modal open={isModal} clicked={() => modalHandler(isModal)}>
           {!loading ? (
-            <OrderSummary
-              ingredients={ingsInfo}
-              cancel={() => modalHandler(isModal)}
-              continue={purchaseContinueHandler}
-              finish={purchaseFinishHandler}
-              price={price}
-              totalPrice={totalPrice}
-            />
+            purchased && !building ? (
+              <p style={{ color: "green" }}>Order Succesful!</p>
+            ) : (
+              <OrderSummary
+                ingredientsInfo={ingsInfo}
+                cancel={() => modalHandler(isModal)}
+                continue={purchaseContinueHandler}
+                finish={purchaseFinishHandler}
+                price={price}
+                totalPrice={totalPrice}
+              />
+            )
           ) : (
             <Spinner />
           )}
         </Modal>
-
         <Burger ingredients={ings} />
         <BuildControls
           ingredientAdded={onIngredientAdded}

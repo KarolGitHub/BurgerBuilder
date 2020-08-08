@@ -15,6 +15,7 @@ const Orders = (props) => {
   const [showBurger, setBurger] = useState(null);
   const [data, setData] = useState(null);
   const [showOrder, setOrder] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   const dispatch = useDispatch();
 
@@ -52,6 +53,7 @@ const Orders = (props) => {
   );
 
   const showOrderHandler = (id) => {
+    setScrollPosition(window.pageYOffset);
     setData(Object.values(updateObject(updateObject(orders)[id].order)));
     setOrder(true);
   };
@@ -60,6 +62,10 @@ const Orders = (props) => {
     setOrder(false);
     setBurger(false);
   };
+
+  useEffect(() => {
+    window.scrollTo(0, scrollPosition);
+  });
 
   const columns = useMemo(
     () => [
@@ -154,7 +160,7 @@ const Orders = (props) => {
           key={order.id}
           id={order.id}
           index={index}
-          order={order.order}
+          date={order.date}
           price={+order.price}
           btnType={showBurger === order.id ? "Danger" : "Success"}
           clicked={(id) => showOrderHandler(id)}
