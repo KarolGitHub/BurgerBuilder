@@ -8,6 +8,12 @@ export const purchaseSuccess = (id, data) => {
   };
 };
 
+export const purchaseEnd = () => {
+  return {
+    type: actionTypes.PURCHASE_END,
+  };
+};
+
 export const purchaseFail = (error) => {
   return {
     type: actionTypes.PURCHASE_BURGER_FAIL,
@@ -26,12 +32,6 @@ export const purchaseBurger = (orderData, token) => {
     type: actionTypes.PURCHASE_BURGER,
     orderData: orderData,
     token: token,
-  };
-};
-
-export const purchaseInit = () => {
-  return {
-    type: actionTypes.PURCHASE_INIT,
   };
 };
 

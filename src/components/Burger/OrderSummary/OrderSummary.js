@@ -12,16 +12,18 @@ const OrderSummary = (props) => {
         {props.ingredientsInfo[igKey]}
       </li>
     ));
+  const price = Math.abs(props.price.toFixed(2));
+  const totalPrice = Math.abs(props.totalPrice.toFixed(2));
   return (
     <Aux>
       <h3>Your Order</h3>
       <ul>{ingredientSummary}</ul>
       <p>Burger amount: {props.ingredientsInfo.amount}</p>
       <p>
-        <strong>Burger Price: ${Math.abs(props.price.toFixed(2))}</strong>
+        <strong>Burger Price: ${price}</strong>
       </p>
       <p>
-        <strong>Order Price: ${Math.abs(props.totalPrice.toFixed(2))}</strong>
+        <strong>Order Price: ${totalPrice}</strong>
       </p>
       <Button btnType={"Danger"} clicked={props.cancel}>
         Cancel
@@ -29,7 +31,11 @@ const OrderSummary = (props) => {
       <Button btnType={"Success"} clicked={props.continue}>
         Add to Cart
       </Button>
-      <Button btnType={"Success"} clicked={props.finish}>
+      <Button
+        btnType={"Success"}
+        clicked={props.finish}
+        disabled={totalPrice > 0 ? false : true}
+      >
         Finish Order
       </Button>
     </Aux>

@@ -8,11 +8,10 @@ export {
   addBurger,
   rebuildBurger,
   deleteBurger,
-  purchaseEnd,
+  purchaseBurgerEnd,
 } from "./burgerBuilder";
 export {
   purchaseBurger,
-  purchaseInit,
   fetchOrders,
   purchaseStart,
   purchaseSuccess,
@@ -20,6 +19,7 @@ export {
   fetchInit,
   fetchSuccess,
   fetchFail,
+  purchaseEnd,
 } from "./order";
 
 export {

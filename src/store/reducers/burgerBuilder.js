@@ -114,7 +114,7 @@ const deleteBurger = (state, action) => {
   });
 };
 
-const purchaseEnd = () => {
+const purchaseBurgerEnd = () => {
   return updateObject(initialState, { building: false });
 };
 
@@ -132,8 +132,8 @@ const reducer = (state = initialState, action) => {
       return rebuildBurger(state, action);
     case actionTypes.DELETE_BURGER:
       return deleteBurger(state, action);
-    case actionTypes.PURCHASE_END:
-      return purchaseEnd();
+    case actionTypes.PURCHASE_BURGER_END:
+      return purchaseBurgerEnd();
     case actionTypes.FETCH_ING_FAILED:
       return updateObject(state, { error: action.error });
     default:

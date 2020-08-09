@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Aux from "../../Hoc/hoc/Auxiliary";
 import { useDispatch, useSelector } from "react-redux";
 
+import classes from "../Checkout/Checkout.module.css";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
@@ -50,8 +51,8 @@ const BurgerBuilder = (props) => {
 
   const onIngredientAdded = (ing) => dispatch(actions.addIng(ing));
   const onIngredientRemoved = (ing) => dispatch(actions.remIng(ing));
-  const onInitPurchase = () => dispatch(actions.purchaseInit());
   const onBurgerAdded = () => dispatch(actions.addBurger());
+  const onPurchaseEnd = () => dispatch(actions.purchaseEnd());
   const onIngredientSet = useCallback(
     (building) => dispatch(actions.setIng(building)),
     [dispatch]
@@ -62,11 +63,16 @@ const BurgerBuilder = (props) => {
   }, [onIngredientSet, building]);
 
   useEffect(() => {
-    if (purchased && !building) {
+    if (purchased) {
       setModal(!isModal);
     }
     //eslint-disable-next-line
-  }, [purchased, building]);
+  }, []);
+
+  const onPurchaseEndHandler = (prevState) => {
+    setModal(!prevState);
+    onPurchaseEnd();
+  };
 
   const updatePurchaseState = (ingredients) => {
     const sum = Object.keys(ingredients)
@@ -87,7 +93,6 @@ const BurgerBuilder = (props) => {
 
   const purchaseFinishHandler = () => {
     props.history.push("/checkout");
-    onInitPurchase();
   };
 
   const purchaseContinueHandler = () => {
@@ -97,28 +102,46 @@ const BurgerBuilder = (props) => {
 
   const ingsInfo = updateObject(ings, { amount: amount });
 
+  let modal = (
+    <Modal open={isModal} clicked={() => modalHandler(isModal)}>
+      <OrderSummary
+        ingredientsInfo={ingsInfo}
+        cancel={() => modalHandler(isModal)}
+        continue={purchaseContinueHandler}
+        finish={purchaseFinishHandler}
+        price={price}
+        totalPrice={totalPrice}
+      />
+    </Modal>
+  );
+
+  if (loading) {
+    modal = (
+      <Modal open={isModal} clicked={() => modalHandler(isModal)}>
+        <Spinner />
+      </Modal>
+    );
+  } else if (purchased && !building) {
+    modal = (
+      <Modal open={isModal} clicked={() => onPurchaseEndHandler(isModal)}>
+        <div style={{ textAlign: "center" }}>
+          <p style={{ color: "green" }}>Order Succesful!</p>
+          <button
+            onClick={() => onPurchaseEndHandler(isModal)}
+            className={[classes.BurgerButton, classes["Success"]].join(" ")}
+          >
+            Confirm
+          </button>
+        </div>
+      </Modal>
+    );
+  }
+
   return (
     !error &&
     (ings ? (
       <Aux>
-        <Modal open={isModal} clicked={() => modalHandler(isModal)}>
-          {!loading ? (
-            purchased && !building ? (
-              <p style={{ color: "green" }}>Order Succesful!</p>
-            ) : (
-              <OrderSummary
-                ingredientsInfo={ingsInfo}
-                cancel={() => modalHandler(isModal)}
-                continue={purchaseContinueHandler}
-                finish={purchaseFinishHandler}
-                price={price}
-                totalPrice={totalPrice}
-              />
-            )
-          ) : (
-            <Spinner />
-          )}
-        </Modal>
+        {modal}
         <Burger ingredients={ings} />
         <BuildControls
           ingredientAdded={onIngredientAdded}

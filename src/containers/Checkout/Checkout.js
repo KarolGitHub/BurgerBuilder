@@ -41,9 +41,10 @@ const Checkout = (props) => {
     [dispatch]
   );
 
-  const onPurchaseEnd = useCallback(() => dispatch(actions.purchaseEnd()), [
-    dispatch,
-  ]);
+  const onPurchaseBurgerEnd = useCallback(
+    () => dispatch(actions.purchaseBurgerEnd()),
+    [dispatch]
+  );
 
   const showBurgerHandler = useCallback(
     (id) => {
@@ -64,6 +65,14 @@ const Checkout = (props) => {
     [onBurgerRebuild, cancelHandler]
   );
 
+  const onBurgerDeleteHandler = useCallback(
+    (id) => {
+      onBurgerDelete(id);
+      setBurger(null);
+    },
+    [onBurgerDelete, setBurger]
+  );
+
   const burgerSum = (data) => {
     let sum = 0;
     for (let burger of data) {
@@ -73,12 +82,10 @@ const Checkout = (props) => {
   };
 
   useEffect(() => {
-    if (purchased)
-      return () => {
-        onPurchaseEnd();
-      };
-    // eslint-disable-next-line
-  }, [onPurchaseEnd, purchased]);
+    if (purchased) {
+      return () => onPurchaseBurgerEnd();
+    }
+  }, [onPurchaseBurgerEnd, purchased]);
 
   const columns = useMemo(
     () => [
@@ -156,7 +163,7 @@ const Checkout = (props) => {
         minWidth: 20,
         Cell: ({ row }) => (
           <button
-            onClick={() => onBurgerDelete(row.id)}
+            onClick={() => onBurgerDeleteHandler(row.id)}
             className={[classes.BurgerButton, classes["Danger"]].join(" ")}
           >
             Delete
@@ -164,7 +171,12 @@ const Checkout = (props) => {
         ),
       },
     ],
-    [showBurger, showBurgerHandler, onBurgerRebuildHandler, onBurgerDelete]
+    [
+      showBurger,
+      showBurgerHandler,
+      onBurgerRebuildHandler,
+      onBurgerDeleteHandler,
+    ]
   );
 
   return data.length > 0 && !purchased ? (

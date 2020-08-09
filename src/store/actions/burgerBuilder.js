@@ -60,13 +60,13 @@ export const rebuildBurger = (id) => {
 
 export const deleteBurger = (id) => {
   return {
-    type: actionTypes.REBUILD_BURGER,
+    type: actionTypes.DELETE_BURGER,
     id: id,
   };
 };
 
-export const purchaseEnd = () => {
+export const purchaseBurgerEnd = () => {
   return {
-    type: actionTypes.PURCHASE_END,
+    type: actionTypes.PURCHASE_BURGER_END,
   };
 };
