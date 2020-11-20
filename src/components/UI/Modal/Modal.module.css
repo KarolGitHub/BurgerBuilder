@@ -21,7 +21,8 @@
     width: 100%;
   }
 }
-@media(min-width: 401px)and(max-width: 599px) {
+@media(min-width: 401px),
+(max-width: 599px) {
   .Modal {
     top: 20%;
     left: 5%;
