@@ -5,14 +5,13 @@ import { connect } from "react-redux";
 import * as actions from "../../../store/actions/index";
 
 const Logout = (props) => {
-  const {onLogout} = props;
+  const { onLogout } = props;
   useEffect(() => {
     onLogout();
-    // eslint-disable-next-line
   }, [onLogout]);
 
   return <Redirect to="/" />;
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {

@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
-import Modal from '../../components/UI/Modal/Modal';
-import Aux from '../hoc/Auxiliary';
-import useHttpErrorHandler from '../hooks/http-error-handler';
+import Modal from "../../components/UI/Modal/Modal";
+import Aux from "../hoc/Auxiliary";
+import useHttpErrorHandler from "../hooks/http-error-handler";
 
 const withErrorHandler = (WrappedComponent, axios) => {
-  return props => {
+  return (props) => {
     const [error, clearError] = useHttpErrorHandler(axios);
 
     return (
@@ -16,7 +16,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
         <WrappedComponent {...props} />
       </Aux>
     );
-  }
+  };
 };
 
 export default withErrorHandler;

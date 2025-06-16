@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 
-import { BurgerBuilder } from "../BurgerBuilder";
+import BurgerBuilder from "../BurgerBuilder";
 import BuildControls from "../../../components/Burger/BuildControls/BuildControls";
 
 describe("<BurgerBuilder />", () => {
@@ -13,11 +13,7 @@ describe("<BurgerBuilder />", () => {
 
     it("should render <BuildControls /> when receiving ingredients", () => {
       wrapper.setProps({ ings: { salad: 0 } });
-      expect(wrapper.find(BuildControls)).toHaveLength(1);
+      expect(wrapper.find(BuildControls)).toBe({});
     });
-
-    /* it('snapshot match', () => {
-			expect(wrapper).toMatchSnapshot();
-		}); */
   });
 });

@@ -11,17 +11,19 @@ const Modal = (props) => {
       <div
         className={classes.Modal}
         style={{
-          transform: props.open ? "translate(0)" : "translate(-100vh)",
+          transform: props.open ? "translate(0)" : "translate(-100vw)",
           opacity: props.open ? "1" : "0",
-        }}>
+        }}
+      >
         {props.children}
       </div>
     </Aux>
   );
-}
+};
 
-export default React.memo(Modal,
-  (prevProps, nextProps) => {
-    return nextProps.open === prevProps.open &&
-      nextProps.children === prevProps.children;
-  });
+export default React.memo(Modal, (prevProps, nextProps) => {
+  return (
+    nextProps.open === prevProps.open &&
+    nextProps.children === prevProps.children
+  );
+});

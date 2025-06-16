@@ -1,33 +1,23 @@
 import React from "react";
 
 import classes from "./Order.module.css";
-const order = (props) => {
-  const ingredients = [];
 
-  for (let ingName in props.ingredients) {
-    ingredients.push({
-      name: ingName,
-      amount: props.ingredients[ingName],
-    });
-  }
-
-  const ingredientOutput = ingredients.map((ig) => {
-    return (
-      <span className={classes.Span} key={ig.name}>
-        {ig.name} ({ig.amount})
-      </span>
-    );
-  });
-
+const Order = React.memo((props) => {
   return (
     <div className={classes.Order}>
-      <h4>{props.id}</h4>
-      <p>Ingredients: {ingredientOutput}</p>
-      <p>
-        Price: <strong>{props.price.toFixed(2)}</strong>
-      </p>
+      <h4>ID: {props.id}</h4>
+      <strong>
+        <p>Date: {props.date}</p>
+        <p>Price: ${Math.abs(props.price.toFixed(2))}</p>
+      </strong>
+      <button
+        className={[classes.BurgerButton, classes[props.btnType]].join(" ")}
+        onClick={() => props.clicked(props.index)}
+      >
+        {props.expand ? "Hide Order" : "Show Order"}
+      </button>
     </div>
   );
-};
+});
 
-export default order;
+export default Order;

@@ -25,21 +25,48 @@ export const fetchIngFail = (error, building) => {
 export const setIng = (building) => {
   return {
     type: actionTypes.SET_INGREDIENT,
-    building: building
+    building: building,
   };
 };
 
 export const initIng = (building) => {
   return {
     type: actionTypes.SET_ING,
-    building: building
+    building: building,
   };
 };
 
-export const setIngredients = (ing, building) => {
+export const setIngredients = (ing, prices, building) => {
   return {
     type: actionTypes.SET_ING,
     ingredients: ing,
+    ingredientsPrices: prices,
     building: building,
+  };
+};
+
+export const addBurger = () => {
+  return {
+    type: actionTypes.ADD_BURGER,
+  };
+};
+
+export const rebuildBurger = (id) => {
+  return {
+    type: actionTypes.REBUILD_BURGER,
+    id: id,
+  };
+};
+
+export const deleteBurger = (id) => {
+  return {
+    type: actionTypes.DELETE_BURGER,
+    id: id,
+  };
+};
+
+export const purchaseBurgerEnd = () => {
+  return {
+    type: actionTypes.PURCHASE_BURGER_END,
   };
 };

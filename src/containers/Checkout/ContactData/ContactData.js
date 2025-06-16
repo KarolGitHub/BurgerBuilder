@@ -11,109 +11,119 @@ import * as actions from "../../../store/actions/order";
 import { updateObject, isValid } from "../../../shared/utility";
 
 const ContactData = (props) => {
-
-  const [orderForm, setOrderForm] = useState(
-    {
-      name: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Your Name",
-        },
-        value: "",
-        validation: {
-          required: true,
-        },
-        valid: false,
-        touched: false,
+  const [orderForm, setOrderForm] = useState({
+    name: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "Your Name",
       },
-      street: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Your Street",
-        },
-        value: "",
-        validation: {
-          required: true,
-        },
-        valid: false,
-        touched: false,
+      value: "",
+      validation: {
+        required: true,
       },
-      zipCode: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "ZIP Code",
-        },
-        value: "",
-        validation: {
-          required: true,
-          isNumeric: true,
-          minLength: 5,
-          maxLength: 5,
-        },
-        valid: false,
-        touched: false,
+      valid: false,
+      touched: false,
+    },
+    street: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "Your Street",
       },
-      country: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Country",
-        },
-        value: "",
-        validation: {
-          required: true,
-        },
-        valid: false,
-        touched: false,
+      value: "",
+      validation: {
+        required: true,
       },
-      email: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Your E-Mail",
-        },
-        value: "",
-        validation: {
-          required: true,
-          isEmail: true,
-        },
-        valid: false,
-        touched: false,
+      valid: false,
+      touched: false,
+    },
+    zipCode: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "ZIP Code",
       },
-      deliveryMethod: {
-        elementType: "select",
-        elementConfig: {
-          options: [
-            { value: "fastest", displayValue: "Fastest" },
-            { value: "cheapest", displayValue: "Cheapest" },
-          ],
-        },
-        value: "fastest",
-        validation: null,
-        valid: true,
-      }
-    });
+      value: "",
+      validation: {
+        required: true,
+        isNumeric: true,
+        minLength: 5,
+        maxLength: 5,
+      },
+      valid: false,
+      touched: false,
+    },
+    country: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "Country",
+      },
+      value: "",
+      validation: {
+        required: true,
+      },
+      valid: false,
+      touched: false,
+    },
+    email: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "Your E-Mail",
+      },
+      value: "",
+      validation: {
+        required: true,
+        isEmail: true,
+      },
+      valid: false,
+      touched: false,
+    },
+    deliveryMethod: {
+      elementType: "select",
+      elementConfig: {
+        options: [
+          { value: "fastest", displayValue: "Fastest" },
+          { value: "cheapest", displayValue: "Cheapest" },
+        ],
+      },
+      value: "fastest",
+      validation: null,
+      valid: true,
+    },
+  });
 
   const [formIsValid, setFormValid] = useState(false);
 
   const orderHandler = (event) => {
     event.preventDefault();
-    // console.log(props.ingredients);
-    // alert('You choose to continue!');
     const formData = {};
     for (let formElementID in orderForm) {
       formData[formElementID] = orderForm[formElementID].value;
     }
 
+    const month = new Date().getMonth() + 1;
+    const date =
+      new Date().getDate() +
+      "/" +
+      month +
+      "/" +
+      new Date().getFullYear() +
+      " " +
+      new Date().getHours() +
+      ":" +
+      new Date().getMinutes() +
+      ":" +
+      new Date().getSeconds();
+
     const order = {
-      ingredients: props.ings,
-      bread: props.bread,
-      price: props.price,
+      order: updateObject(props.order),
+      price: Math.abs(props.price.toFixed(2)),
       orderData: formData,
       userId: props.userId,
+      date: date,
     };
 
     props.onOrderBurger(order, props.token);
@@ -122,10 +132,7 @@ const ContactData = (props) => {
   const inputChangedHandler = (event, inputID) => {
     const updatedFormElement = updateObject(orderForm[inputID], {
       value: event.target.value,
-      valid: isValid(
-        event.target.value,
-        orderForm[inputID].validation
-      ),
+      valid: isValid(event.target.value, orderForm[inputID].validation),
       touched: true,
     });
     const updatedOrderForm = updateObject(orderForm, {
@@ -172,18 +179,17 @@ const ContactData = (props) => {
           clicked={orderHandler}
         >
           ORDER
-          </Button>
+        </Button>
       </form>
     </div>
   ) : (
-      <Spinner />
-    );
-}
+    <Spinner />
+  );
+};
 
 const mapStateToProps = (state) => {
   return {
-    ings: state.burgerBuilder.ingredients,
-    bread: state.burgerBuilder.bread,
+    order: state.burgerBuilder.order,
     price: state.burgerBuilder.totalPrice,
     loading: state.order.loading,
     token: state.auth.token,
